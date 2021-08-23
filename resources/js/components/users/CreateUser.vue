@@ -87,7 +87,7 @@ import axios from 'axios'
                     password: this.data.password,
                     confirm_password: this.data.confirm_password
                 }).then(response => {
-                    console.log(response.data)
+                    this.$emit('created-user', 'User created successfully: ' + response.data.user.name + ' | email: ' + response.data.user.email)
                 }).catch(errors => {
                     if(errors.response.status === 422){
                         this.flashErrors(errors.response.data.errors)

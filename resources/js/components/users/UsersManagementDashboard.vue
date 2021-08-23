@@ -4,6 +4,10 @@
             <div class="card-body">
                 <h3>Manage Users <button class="btn btn-sm btn-outline-success float-right" @click="setActive('createUser')"><i class="fas fa-plus"></i> User</button></h3>
 
+                <div class="alert alert-success" role="alert" v-if="success_message !== null">
+                    {{ success_message }}
+                </div>
+
                 <paginator
                     v-if="results !== null"
                     v-bind:results="results"
@@ -49,6 +53,7 @@
         <create-user
             v-if="active.createUser"
             v-on:view-dashboard="setActive('dashboard')"
+            v-on:created-user="flashSuccessAndReload($event)"
         ></create-user>
     </div>
 </template>
@@ -76,7 +81,8 @@ import CreateUser from './CreateUser.vue'
                 },
                 params : {
                     page : 1
-                }
+                },
+                success_message : null
             }
         },
         methods: {
@@ -93,6 +99,11 @@ import CreateUser from './CreateUser.vue'
             setActive: function(component) {
                 Object.keys(this.active).forEach(key => this.active[key] = false)
                 this.active[component] = true
+            },
+            flashSuccessAndReload: function(event) {
+                this.setActive('dashboard')
+                this.success_message = event
+                this.getUsers()
             }
         }
     }

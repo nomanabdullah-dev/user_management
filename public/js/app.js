@@ -6460,7 +6460,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         password: this.data.password,
         confirm_password: this.data.confirm_password
       }).then(function (response) {
-        console.log(response.data);
+        _this.$emit('created-user', 'User created successfully: ' + response.data.user.name + ' | email: ' + response.data.user.email);
       })["catch"](function (errors) {
         if (errors.response.status === 422) {
           _this.flashErrors(errors.response.data.errors);
@@ -6556,6 +6556,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -6577,7 +6582,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       params: {
         page: 1
-      }
+      },
+      success_message: null
     };
   },
   methods: {
@@ -6602,6 +6608,11 @@ __webpack_require__.r(__webpack_exports__);
         return _this2.active[key] = false;
       });
       this.active[component] = true;
+    },
+    flashSuccessAndReload: function flashSuccessAndReload(event) {
+      this.setActive('dashboard');
+      this.success_message = event;
+      this.getUsers();
     }
   }
 });
@@ -42878,6 +42889,23 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
+                _vm.success_message !== null
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "alert alert-success",
+                        attrs: { role: "alert" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.success_message) +
+                            "\n            "
+                        )
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
                 _vm.results !== null
                   ? _c("paginator", {
                       attrs: { results: _vm.results },
@@ -42928,6 +42956,9 @@ var render = function() {
             on: {
               "view-dashboard": function($event) {
                 return _vm.setActive("dashboard")
+              },
+              "created-user": function($event) {
+                return _vm.flashSuccessAndReload($event)
               }
             }
           })
