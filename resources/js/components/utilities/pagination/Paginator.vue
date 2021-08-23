@@ -56,9 +56,6 @@
 
 <script>
     export default {
-        mounted(){
-            console.log(this.results)
-        },
         props : ['results']
     }
 </script>

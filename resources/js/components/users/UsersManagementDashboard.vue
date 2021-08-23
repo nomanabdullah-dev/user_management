@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="card mt-3">
+        <div class="card mt-3" v-if="active.dashboard">
             <div class="card-body">
-                <h3>Manage Users</h3>
+                <h3>Manage Users <button class="btn btn-sm btn-outline-success float-right" @click="setActive('createUser')"><i class="fas fa-plus"></i> User</button></h3>
 
                 <paginator
                     v-if="results !== null"
@@ -45,16 +45,24 @@
                 ></paginator>
             </div>
         </div>
+
+        <create-user
+            v-if="active.createUser"
+            v-on:view-dashboard="setActive('dashboard')"
+        ></create-user>
     </div>
 </template>
 
 <script>
 import Paginator from '../utilities/pagination/Paginator.vue'
 import PaginatorDetails from '../utilities/pagination/PaginatorDetails.vue'
+import CreateUser from './CreateUser.vue'
+
     export default {
         components : {
             Paginator,
-            PaginatorDetails
+            PaginatorDetails,
+            CreateUser
         },
         mounted() {
             this.getUsers()
@@ -62,6 +70,10 @@ import PaginatorDetails from '../utilities/pagination/PaginatorDetails.vue'
         data() {
             return {
                 results : null,
+                active: {
+                    dashboard: true,
+                    createUser: false
+                },
                 params : {
                     page : 1
                 }
@@ -77,6 +89,10 @@ import PaginatorDetails from '../utilities/pagination/PaginatorDetails.vue'
                 this.params.page = event
                 window.scrollTo(0,0)
                 this.getUsers()
+            },
+            setActive: function(component) {
+                Object.keys(this.active).forEach(key => this.active[key] = false)
+                this.active[component] = true
             }
         }
     }
