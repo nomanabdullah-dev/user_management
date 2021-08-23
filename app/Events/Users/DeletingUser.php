@@ -9,19 +9,22 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 
 class DeletingUser
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $user;
+    public $deleted_by;
+    public $deleted_at;
+
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
+        $this->deleted_by = Auth::user() ?? null;
+        $this->deleted_at = date('F d, y @ H:i:s');
+
     }
 
     /**
