@@ -6480,6 +6480,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     console.log(this.results);
@@ -42311,71 +42330,113 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
-      _c("ul", { staticClass: "pagination" }, [
-        _vm.results.current_page > 2
-          ? _c(
-              "li",
-              {
-                staticClass: "page-item",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.$emit("get-page", 1)
+      _c(
+        "ul",
+        { staticClass: "pagination" },
+        [
+          _vm.results.current_page > 2
+            ? _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.$emit("get-page", 1)
+                    }
                   }
-                }
-              },
-              [_vm._m(0)]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.results.current_page > 1
-          ? _c(
-              "li",
-              {
-                staticClass: "page-item",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.$emit("get-page", _vm.results.current_page - 1)
+                },
+                [_vm._m(0)]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.results.current_page > 1
+            ? _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.$emit("get-page", _vm.results.current_page - 1)
+                    }
                   }
-                }
-              },
-              [_vm._m(1)]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.results.current_page < _vm.results.last_page
-          ? _c(
-              "li",
-              {
-                staticClass: "page-item",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.$emit("get-page", _vm.results.current_page + 1)
+                },
+                [_vm._m(1)]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.results.current_page > 5
+            ? _c("li", { staticClass: "page-item" }, [
+                _c("span", { staticClass: "page-link" }, [_vm._v("...")])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._l(_vm.results.last_page, function(num) {
+            return num > _vm.results.current_page - 5 &&
+              num < _vm.results.current_page + 5
+              ? _c(
+                  "li",
+                  {
+                    key: num.index,
+                    staticClass: "page-item",
+                    class: { active: num === _vm.results.current_page },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.$emit("get-page", num)
+                      }
+                    }
+                  },
+                  [
+                    _c("a", { staticClass: "page-link", attrs: { href: "" } }, [
+                      _vm._v(_vm._s(num))
+                    ])
+                  ]
+                )
+              : _vm._e()
+          }),
+          _vm._v(" "),
+          _vm.results.current_page < _vm.results.last_page - 5
+            ? _c("li", { staticClass: "page-item" }, [
+                _c("span", { staticClass: "page-link" }, [_vm._v("...")])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.results.current_page < _vm.results.last_page
+            ? _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.$emit("get-page", _vm.results.current_page + 1)
+                    }
                   }
-                }
-              },
-              [_vm._m(2)]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.results.current_page < _vm.results.last_page - 1
-          ? _c(
-              "li",
-              {
-                staticClass: "page-item",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    return _vm.$emit("get-page", _vm.results.last_page)
+                },
+                [_vm._m(2)]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.results.current_page < _vm.results.last_page - 1
+            ? _c(
+                "li",
+                {
+                  staticClass: "page-item",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.$emit("get-page", _vm.results.last_page)
+                    }
                   }
-                }
-              },
-              [_vm._m(3)]
-            )
-          : _vm._e()
-      ])
+                },
+                [_vm._m(3)]
+              )
+            : _vm._e()
+        ],
+        2
+      )
     ])
   ])
 }
