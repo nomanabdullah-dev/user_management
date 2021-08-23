@@ -8,8 +8,12 @@
                     v-if="results !== null"
                     v-bind:results="results"
                     v-on:get-page="getPage"
-                >
-                </paginator>
+                ></paginator>
+
+                <paginator-details
+                    v-if="results !== null"
+                    v-bind:results="results"
+                ></paginator-details>
 
                 <table class="table table-hover">
                     <thead>
@@ -33,6 +37,12 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <paginator
+                    v-if="results !== null"
+                    v-bind:results="results"
+                    v-on:get-page="getPage"
+                ></paginator>
             </div>
         </div>
     </div>
@@ -40,9 +50,11 @@
 
 <script>
 import Paginator from '../utilities/pagination/Paginator.vue'
+import PaginatorDetails from '../utilities/pagination/PaginatorDetails.vue'
     export default {
         components : {
-            Paginator
+            Paginator,
+            PaginatorDetails
         },
         mounted() {
             this.getUsers()
@@ -63,6 +75,7 @@ import Paginator from '../utilities/pagination/Paginator.vue'
             },
             getPage: function(event) {
                 this.params.page = event
+                window.scrollTo(0,0)
                 this.getUsers()
             }
         }
