@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('users')->group(function(){
     Route::get('/', [UsersUsersController::class, 'index']);
     Route::post('/', [UsersUsersController::class, 'store']);
+    Route::delete('{user}', [UsersUsersController::class, 'destroy']);
 });
 
 ?>

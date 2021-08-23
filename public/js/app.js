@@ -6498,9 +6498,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _utilities_pagination_Paginator_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utilities/pagination/Paginator.vue */ "./resources/js/components/utilities/pagination/Paginator.vue");
-/* harmony import */ var _utilities_pagination_PaginatorDetails_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utilities/pagination/PaginatorDetails.vue */ "./resources/js/components/utilities/pagination/PaginatorDetails.vue");
-/* harmony import */ var _CreateUser_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CreateUser.vue */ "./resources/js/components/users/CreateUser.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utilities_pagination_Paginator_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utilities/pagination/Paginator.vue */ "./resources/js/components/utilities/pagination/Paginator.vue");
+/* harmony import */ var _utilities_pagination_PaginatorDetails_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utilities/pagination/PaginatorDetails.vue */ "./resources/js/components/utilities/pagination/PaginatorDetails.vue");
+/* harmony import */ var _CreateUser_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CreateUser.vue */ "./resources/js/components/users/CreateUser.vue");
 //
 //
 //
@@ -6561,14 +6563,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    Paginator: _utilities_pagination_Paginator_vue__WEBPACK_IMPORTED_MODULE_0__.default,
-    PaginatorDetails: _utilities_pagination_PaginatorDetails_vue__WEBPACK_IMPORTED_MODULE_1__.default,
-    CreateUser: _CreateUser_vue__WEBPACK_IMPORTED_MODULE_2__.default
+    Paginator: _utilities_pagination_Paginator_vue__WEBPACK_IMPORTED_MODULE_1__.default,
+    PaginatorDetails: _utilities_pagination_PaginatorDetails_vue__WEBPACK_IMPORTED_MODULE_2__.default,
+    CreateUser: _CreateUser_vue__WEBPACK_IMPORTED_MODULE_3__.default
   },
   mounted: function mounted() {
     this.getUsers();
@@ -6583,18 +6591,36 @@ __webpack_require__.r(__webpack_exports__);
       params: {
         page: 1
       },
-      success_message: null
+      success_message: null,
+      danger_message: null
     };
   },
   methods: {
     getUsers: function getUsers() {
       var _this = this;
 
-      axios.get('/data/users', {
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get('/data/users', {
         params: this.params
       }).then(function (response) {
         _this.results = response.data.results;
       });
+    },
+    deleteUser: function deleteUser(user) {
+      var _this2 = this;
+
+      var r = confirm("Are you sure you want to delete " + user.name + " from the system?");
+
+      if (r) {
+        axios__WEBPACK_IMPORTED_MODULE_0___default().post('/data/users/' + user.id, {
+          _method: 'DELETE'
+        }).then(function (response) {
+          _this2.flashSuccessAndReload(response.data.message);
+        })["catch"](function (errors) {
+          if (errors.response.status === 403) {
+            _this2.flashDanger("Unauthorized to delete the user");
+          }
+        });
+      }
     },
     getPage: function getPage(event) {
       this.params.page = event;
@@ -6602,17 +6628,33 @@ __webpack_require__.r(__webpack_exports__);
       this.getUsers();
     },
     setActive: function setActive(component) {
-      var _this2 = this;
+      var _this3 = this;
 
       Object.keys(this.active).forEach(function (key) {
-        return _this2.active[key] = false;
+        return _this3.active[key] = false;
       });
       this.active[component] = true;
     },
     flashSuccessAndReload: function flashSuccessAndReload(event) {
       this.setActive('dashboard');
-      this.success_message = event;
+      this.flashSuccess(event);
       this.getUsers();
+    },
+    flashSuccess: function flashSuccess(message) {
+      var _this4 = this;
+
+      this.success_message = message;
+      setTimeout(function () {
+        _this4.success_message = null;
+      }, 5000);
+    },
+    flashDanger: function flashDanger(message) {
+      var _this5 = this;
+
+      this.danger_message = message;
+      setTimeout(function () {
+        _this5.danger_message = null;
+      }, 5000);
     }
   }
 });
@@ -42906,6 +42948,23 @@ var render = function() {
                     )
                   : _vm._e(),
                 _vm._v(" "),
+                _vm.danger_message !== null
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "alert alert-danger",
+                        attrs: { role: "alert" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.danger_message) +
+                            "\n            "
+                        )
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
                 _vm.results !== null
                   ? _c("paginator", {
                       attrs: { results: _vm.results },
@@ -42931,7 +42990,24 @@ var render = function() {
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(user.user_since))]),
                             _vm._v(" "),
-                            _vm._m(1, true)
+                            _c("td", [
+                              _c("div", { staticClass: "btn-group" }, [
+                                _vm._m(1, true),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-sm btn-danger",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deleteUser(user)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "fas fa-trash" })]
+                                )
+                              ])
+                            ])
                           ])
                         }),
                         0
@@ -42957,9 +43033,7 @@ var render = function() {
               "view-dashboard": function($event) {
                 return _vm.setActive("dashboard")
               },
-              "created-user": function($event) {
-                return _vm.flashSuccessAndReload($event)
-              }
+              "created-user": _vm.flashSuccessAndReload
             }
           })
         : _vm._e()
@@ -42988,12 +43062,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("div", { staticClass: "btn-group" }, [
-        _c("button", { staticClass: "btn btn-sm btn-warning" }, [
-          _c("i", { staticClass: "fas fa-edit" })
-        ])
-      ])
+    return _c("button", { staticClass: "btn btn-sm btn-warning" }, [
+      _c("i", { staticClass: "fas fa-edit" })
     ])
   }
 ]
