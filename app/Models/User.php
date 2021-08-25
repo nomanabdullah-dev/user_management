@@ -48,7 +48,8 @@ class User extends Authenticatable
 
     protected $dispatchesEvents = [
         'created'   => 'App\Events\Users\CreatedUser',
-        'deleting'  => 'App\Events\Users\DeletingUser'
+        'deleting'  => 'App\Events\Users\DeletingUser',
+        'updated'  => 'App\Events\Users\UpdatedUser'
     ];
 
     public function getUserSinceAttribute()

@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UserSeeder::class);
         \App\Models\User::factory(250)->create();
+        \App\Models\UserLog::factory(150)->create();
     }
 }

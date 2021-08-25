@@ -26,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Users\Logs\LogDeletingUser',
             'App\Listeners\Users\Notifications\NotifyDeletingUser',
         ],
+        'App\Events\Users\UpdatedUser' => [
+            'App\Listeners\Users\Logs\LogUpdatedUser'
+        ]
     ];
 
     /**

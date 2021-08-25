@@ -39,7 +39,9 @@
                             <td>{{ user.user_since }}</td>
                             <td>
                                 <div class="btn-group">
-                                    <button class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-secondary" title="View User Logs" @click="viewUserLogs(user)"><i class="fas fa-list-alt"></i></button>
+                                    <button class="btn btn-sm btn-warning" title="Edit User" @click="editUser(user)"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-secondary" title="Change User Password" @click="changePassword(user)"><i class="fas fa-key"></i></button>
                                     <button class="btn btn-sm btn-danger" @click="deleteUser(user)"><i class="fas fa-trash"></i></button>
                                 </div>
                             </td>
@@ -60,6 +62,27 @@
             v-on:view-dashboard="setActive('dashboard')"
             v-on:created-user="flashSuccessAndReload"
         ></create-user>
+
+        <user-logs
+            v-if="user !== null && active.userLogs"
+            v-bind:user="user"
+            v-on:view-dashboard="setActive('dashboard')"
+        ></user-logs>
+
+        <edit-user
+            v-if="user !== null && active.editUser"
+            v-bind:user="user"
+            v-on:view-dashboard="setActive('dashboard')"
+            v-on:user-updated="flashSuccessAndReload"
+        ></edit-user>
+
+        <change-user-password
+            v-if="user !== null && active.changePassword"
+            v-bind:user="user"
+            v-on:view-dashboard="setActive('dashboard')"
+            v-on:updated-password="flashSuccessAndReload"
+            v-on:sent-reset-link="flashSuccessAndReload"
+        ></change-user-password>
     </div>
 </template>
 
@@ -68,22 +91,32 @@ import axios from 'axios'
 import Paginator from '../utilities/pagination/Paginator.vue'
 import PaginatorDetails from '../utilities/pagination/PaginatorDetails.vue'
 import CreateUser from './CreateUser.vue'
+import UserLogs from './logs/UserLogs.vue'
+import EditUser from './EditUser.vue'
+import ChangeUserPassword from './ChangeUserPassword.vue'
 
     export default {
         components : {
             Paginator,
             PaginatorDetails,
-            CreateUser
+            CreateUser,
+            UserLogs,
+            EditUser,
+            ChangeUserPassword
         },
         mounted() {
             this.getUsers()
         },
         data() {
             return {
+                user : null,
                 results : null,
                 active: {
                     dashboard: true,
-                    createUser: false
+                    createUser: false,
+                    userLogs: false,
+                    editUser: false,
+                    changeUserPassword: false
                 },
                 params : {
                     page : 1
@@ -98,6 +131,14 @@ import CreateUser from './CreateUser.vue'
                     this.results = response.data.results
                 })
             },
+            editUser: function(user){
+                this.user = user
+                this.setActive('editUser')
+            },
+            changePassword: function(user){
+                this.user = user
+                this.setActive('changePassword')
+            },
             deleteUser: function(user) {
                 let r = confirm("Are you sure you want to delete " + user.name + " from the system?")
                 if(r) {
@@ -111,6 +152,10 @@ import CreateUser from './CreateUser.vue'
                             }
                         })
                 }
+            },
+            viewUserLogs: function(user) {
+                this.user = user
+                this.setActive('userLogs')
             },
             getPage: function(event) {
                 this.params.page = event

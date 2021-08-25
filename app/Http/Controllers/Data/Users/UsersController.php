@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Data\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,12 @@ class UsersController extends Controller
     {
         $user = User::create($request->only('name', 'role', 'email') + ['password' => Hash::make($request->password)]);
         return response()->json(['user' => $user]);
+    }
+
+    public function update(UpdateUserRequest $request, User $user)
+    {
+        $user->update($request->validated());
+        return response()->json(['user'=> $user->only('id','name','email','role')]);
     }
 
     public function destroy(User $user)

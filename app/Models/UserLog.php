@@ -14,4 +14,9 @@ class UserLog extends Model
     protected $casts = [
         'metadata' => 'array'
     ];
+
+    public function scopeByUser($query, $user_id)
+    {
+        return $query->where('user_id', $user_id);
+    }
 }
